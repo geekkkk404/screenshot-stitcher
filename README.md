@@ -6,7 +6,89 @@ A small CLI for stitching multiple vertically scrolling iPhone screenshots into 
 
 It is designed for ordered screenshots from the same device and works best on list-like pages, app stores, settings screens, and similar vertical interfaces.
 
-This is not an AI image generation tool. It is a deterministic image-processing utility powered by OpenCV and NumPy: it crops stable UI chrome, searches for overlapping regions, verifies alignment with visual features, and chooses a clean horizontal seam. Your screenshots stay on your machine; the CLI does not upload images or call hosted AI APIs.
+## Local First
+
+Your screenshots stay on your machine. `screenshot-stitcher` reads image files from disk, runs OpenCV/NumPy matching in the current Python process, and writes the stitched output back to disk. It does not send screenshots, filenames, or image metadata to any external service.
+
+This is not an AI image generation tool and it does not call an LLM or hosted vision API. The stitching pipeline is deterministic image processing: it crops stable UI chrome, searches for overlapping regions, verifies alignment with visual features, and chooses a clean horizontal seam.
+
+The optional agent skill is only a routing layer. It helps Codex, OpenClaw, Claude, and similar agents choose the right CLI command and flags, while the actual image processing still runs locally.
+
+## Agent / Skill Installation
+
+If you use OpenClaw, Codex, or another agent that can install ClawHub skills, install the skill first:
+
+```bash
+clawhub install screenshot-stitcher
+```
+
+Then install the local CLI in the Python environment that the agent will use:
+
+```bash
+pip install screenshot-stitcher
+screenshot-stitcher --help
+```
+
+If your machine has multiple Python installations, use `python -m pip` to target the right environment:
+
+```bash
+python -m pip install screenshot-stitcher
+screenshot-stitcher --help
+```
+
+The skill source is also included in this repository at [`skills/screenshot-stitcher/`](skills/screenshot-stitcher), so agents working from a cloned checkout can read or install it directly.
+
+## CLI Installation
+
+Requirements:
+
+- Python `3.10` or newer
+- `pip`
+- macOS, Linux, or Windows with prebuilt `opencv-python` wheels available
+
+Runtime dependencies are installed automatically:
+
+- `numpy`
+- `opencv-python`
+
+Install from PyPI:
+
+```bash
+pip install screenshot-stitcher
+screenshot-stitcher --help
+```
+
+Install directly from GitHub:
+
+```bash
+pip install "git+https://github.com/mate-matt/screenshot-stitcher.git"
+screenshot-stitcher --help
+```
+
+Install from a cloned checkout:
+
+```bash
+cd /path/to/screenshot-stitcher
+pip install .
+screenshot-stitcher --help
+```
+
+For editable local development:
+
+```bash
+pip install -e .
+python main.py --help
+```
+
+Verify the example assets after installation:
+
+```bash
+screenshot-stitcher \
+  examples/cases/app-store-search/inputs/01.png \
+  examples/cases/app-store-search/inputs/02.png \
+  examples/cases/app-store-search/inputs/03.png \
+  -o /tmp/app-store-search-stitched.png
+```
 
 ## Showcase
 
@@ -60,72 +142,6 @@ The comparison below uses the same Apple homepage flow:
 - Tune top/bottom UI cropping and horizontal edge masking with CLI flags
 - Keep working with a fallback mode when overlap confidence is not strong enough
 
-## Local Processing
-
-All processing happens locally. `screenshot-stitcher` reads image files from disk, runs OpenCV/NumPy matching in the current Python process, and writes the stitched output back to disk. It does not send screenshots, filenames, or image metadata to any external service.
-
-## Installation
-
-Requirements:
-
-- Python `3.10` or newer
-- `pip`
-- macOS, Linux, or Windows with prebuilt `opencv-python` wheels available
-
-Runtime dependencies are installed automatically:
-
-- `numpy`
-- `opencv-python`
-
-Install the CLI:
-
-```bash
-pip install screenshot-stitcher
-screenshot-stitcher --help
-```
-
-If your machine has multiple Python installations, use `python -m pip` to install into a specific environment:
-
-```bash
-python -m pip install screenshot-stitcher
-```
-
-### Install The Latest GitHub Version
-
-To install directly from the repository:
-
-```bash
-pip install "git+https://github.com/mate-matt/screenshot-stitcher.git"
-screenshot-stitcher --help
-```
-
-### Install From A Cloned Checkout
-
-If you are an agent such as Codex or Claude working inside a checked-out copy of this repo, install it from the repository root:
-
-```bash
-cd /path/to/screenshot-stitcher
-pip install .
-screenshot-stitcher --help
-```
-
-For editable local development:
-
-```bash
-pip install -e .
-python main.py --help
-```
-
-To verify the example assets work after installation:
-
-```bash
-screenshot-stitcher \
-  examples/cases/app-store-search/inputs/01.png \
-  examples/cases/app-store-search/inputs/02.png \
-  examples/cases/app-store-search/inputs/03.png \
-  -o /tmp/app-store-search-stitched.png
-```
-
 ## Usage
 
 ```bash
@@ -174,12 +190,6 @@ This project is intentionally narrow:
 - Temporary overlays, badges, or floating UI can break otherwise valid overlaps
 - Dynamic headers and browser bars may require tuning `--top-crop`, `--bottom-crop`, or `--x-margin`
 - It is not a general panorama or arbitrary image stitching engine
-
-## Codex Skill
-
-This repo also includes a Codex skill at [`skills/screenshot-stitcher/`](skills/screenshot-stitcher) for routing screenshot stitching requests to the CLI and suggesting the most relevant flags.
-
-Because the CLI contract is simple and the prompting surface is small, the same skill pattern can be integrated quickly into Claude, Codex, OpenClaw, Hermes, and similar agent-driven toolchains.
 
 ## Development
 

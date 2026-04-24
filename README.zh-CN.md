@@ -6,7 +6,89 @@
 
 它更适合同一台设备、同一页面流、按正确顺序输入的截图，尤其适合列表页、应用商店、设置页这类纵向界面。
 
-这不是 AI 图像生成工具。它是一个由 OpenCV 和 NumPy 驱动的确定性图像处理工具：裁掉稳定 UI 区域，寻找相邻截图的重叠部分，用视觉特征验证对齐，并选择自然的水平拼接线。你的截图会留在本机；这个 CLI 不会上传图片，也不会调用托管的 AI API。
+## 本地优先
+
+你的截图会留在本机。`screenshot-stitcher` 从磁盘读取图片，在当前 Python 进程里运行 OpenCV/NumPy 匹配，然后把拼接结果写回磁盘。它不会把截图、文件名或图片元数据发送到任何外部服务。
+
+这不是 AI 图像生成工具，也不会调用 LLM 或托管的视觉 API。它的拼接流程是确定性的图像处理：裁掉稳定 UI 区域，寻找相邻截图的重叠部分，用视觉特征验证对齐，并选择自然的水平拼接线。
+
+可选的 agent skill 只是一层路由说明。它帮助 Codex、OpenClaw、Claude 等 agent 选择正确的 CLI 命令和参数，真正的图片处理仍然在本地完成。
+
+## Agent / Skill 安装
+
+如果你使用 OpenClaw、Codex，或其他可以安装 ClawHub skill 的 agent，先安装 skill：
+
+```bash
+clawhub install screenshot-stitcher
+```
+
+然后把本地 CLI 安装到 agent 会使用的 Python 环境里：
+
+```bash
+pip install screenshot-stitcher
+screenshot-stitcher --help
+```
+
+如果机器上有多个 Python 环境，可以用 `python -m pip` 指定安装目标：
+
+```bash
+python -m pip install screenshot-stitcher
+screenshot-stitcher --help
+```
+
+本仓库也包含 skill 源码：[`skills/screenshot-stitcher/`](skills/screenshot-stitcher)。如果 agent 已经在克隆后的仓库里工作，也可以直接读取或安装这个目录。
+
+## CLI 安装
+
+环境要求：
+
+- Python `3.10` 或更新版本
+- `pip`
+- macOS、Linux 或 Windows，并且当前平台能安装预编译的 `opencv-python` wheel
+
+运行时依赖会自动安装：
+
+- `numpy`
+- `opencv-python`
+
+从 PyPI 安装：
+
+```bash
+pip install screenshot-stitcher
+screenshot-stitcher --help
+```
+
+直接从 GitHub 安装：
+
+```bash
+pip install "git+https://github.com/mate-matt/screenshot-stitcher.git"
+screenshot-stitcher --help
+```
+
+从已克隆仓库安装：
+
+```bash
+cd /path/to/screenshot-stitcher
+pip install .
+screenshot-stitcher --help
+```
+
+本地开发时可以使用 editable install：
+
+```bash
+pip install -e .
+python main.py --help
+```
+
+安装后可以用内置示例快速验证：
+
+```bash
+screenshot-stitcher \
+  examples/cases/app-store-search/inputs/01.png \
+  examples/cases/app-store-search/inputs/02.png \
+  examples/cases/app-store-search/inputs/03.png \
+  -o /tmp/app-store-search-stitched.png
+```
 
 ## 成果展示
 
@@ -60,72 +142,6 @@
 - 支持通过参数调节顶部/底部 UI 裁剪和左右边缘屏蔽
 - 在重叠置信度不足时，提供兜底拼接策略
 
-## 本地处理
-
-所有处理都发生在本机。`screenshot-stitcher` 从磁盘读取图片，在当前 Python 进程里运行 OpenCV/NumPy 匹配，然后把拼接结果写回磁盘。它不会把截图、文件名或图片元数据发送到任何外部服务。
-
-## 安装
-
-环境要求：
-
-- Python `3.10` 或更新版本
-- `pip`
-- macOS、Linux 或 Windows，并且当前平台能安装预编译的 `opencv-python` wheel
-
-运行时依赖会自动安装：
-
-- `numpy`
-- `opencv-python`
-
-安装 CLI：
-
-```bash
-pip install screenshot-stitcher
-screenshot-stitcher --help
-```
-
-如果机器上有多个 Python 环境，可以使用 `python -m pip`，安装到指定的 Python 环境：
-
-```bash
-python -m pip install screenshot-stitcher
-```
-
-### 安装 GitHub 最新版
-
-也可以直接从 GitHub 仓库安装：
-
-```bash
-pip install "git+https://github.com/mate-matt/screenshot-stitcher.git"
-screenshot-stitcher --help
-```
-
-### 从已克隆仓库安装
-
-如果 Codex、Claude 这类 agent 已经在这个仓库目录里工作，直接在仓库根目录安装：
-
-```bash
-cd /path/to/screenshot-stitcher
-pip install .
-screenshot-stitcher --help
-```
-
-本地开发时可以使用 editable install：
-
-```bash
-pip install -e .
-python main.py --help
-```
-
-安装后可以用内置示例快速验证：
-
-```bash
-screenshot-stitcher \
-  examples/cases/app-store-search/inputs/01.png \
-  examples/cases/app-store-search/inputs/02.png \
-  examples/cases/app-store-search/inputs/03.png \
-  -o /tmp/app-store-search-stitched.png
-```
-
 ## 使用方式
 
 ```bash
@@ -174,12 +190,6 @@ python main.py img1.png img2.png img3.png -o output.png
 - 临时弹窗、徽标、悬浮元素可能破坏原本可用的重叠区域
 - 动态头部、浏览器底栏等场景，有时需要手动调 `--top-crop`、`--bottom-crop` 或 `--x-margin`
 - 它不是一个通用全景图引擎，也不是任意图片拼接器
-
-## Codex Skill
-
-仓库里还提供了一个 Codex skill：[`skills/screenshot-stitcher/`](skills/screenshot-stitcher)，可以把“拼接截图”请求路由到这个 CLI，并根据页面类型建议合适参数。
-
-因为这个 CLI 的调用约定很简单、提示词表面也很薄，所以同样的 skill 模式也适合快速接到 Claude、Codex、OpenClaw、Hermes 以及类似的 agent 工具链里。
 
 ## 开发说明
 
