@@ -7,23 +7,47 @@ description: Use when the task is to stitch multiple vertically scrolling iPhone
 
 Use this skill when the user wants to combine multiple iPhone screenshots into one long image.
 
-The CLI contract is intentionally small, so the same workflow ports cleanly into Claude, Codex, OpenClaw, Hermes, and similar agent wrappers that can invoke shell commands.
+The CLI contract is intentionally small, so the same workflow ports cleanly into Claude, Codex, OpenClaw, Hermes, and similar agent wrappers that can invoke shell commands. The tool is OpenCV/NumPy-driven local image processing, not AI image generation.
+
+## Privacy
+
+All image processing happens locally in the user's Python process. The CLI reads screenshots from disk, writes the stitched output back to disk, and does not upload screenshots, filenames, or image metadata to any external service.
+
+## Install The CLI
+
+Prefer the published PyPI package:
+
+```bash
+pip install screenshot-stitcher
+screenshot-stitcher --help
+```
+
+If the machine has multiple Python environments, install into the environment the agent will use:
+
+```bash
+python -m pip install screenshot-stitcher
+screenshot-stitcher --help
+```
+
+If the package is already installed, skip installation and use the CLI directly.
 
 ## Workflow
 
 1. Confirm the inputs are vertically scrolling screenshots from the same device width.
 2. Preserve the user's input order. Do not reorder by timestamp.
-3. Prefer the installed CLI:
+3. Use the installed CLI:
 
 ```bash
 screenshot-stitcher img1.png img2.png img3.png -o output.png
 ```
 
-4. If the CLI is not installed in the environment, run the repo entrypoint instead:
+4. If the package cannot be installed but the agent is inside a cloned checkout, run the repo entrypoint instead:
 
 ```bash
 python3 main.py img1.png img2.png img3.png -o output.png
 ```
+
+5. After writing the output file, report the path and mention any low-confidence overlaps printed by the CLI.
 
 ## Useful Flags
 
