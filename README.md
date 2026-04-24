@@ -40,6 +40,23 @@ After this, the agent can use the `screenshot-stitcher` command directly. If `sc
 
 The skill source is also included in this repository at [`skills/screenshot-stitcher/`](skills/screenshot-stitcher), so agents working from a cloned checkout can read or install it directly.
 
+## Mobile Agent Use Case
+
+You can also use `screenshot-stitcher` from a phone by connecting OpenClaw to a Feishu/Lark channel. Send the screenshots and instruction in chat; OpenClaw reads the skill, calls the local CLI on your machine, and sends the stitched image back.
+
+The images below show the mobile Feishu flow:
+
+<table>
+  <tr>
+    <th align="left">Send screenshots to OpenClaw</th>
+    <th align="left">Receive the stitched result</th>
+  </tr>
+  <tr>
+    <td><img src="examples/usecases/openclaw-feishu/request.png" width="260" alt="Feishu mobile chat sending screenshots to OpenClaw" /></td>
+    <td><img src="examples/usecases/openclaw-feishu/result.png" width="260" alt="Feishu mobile chat receiving stitched screenshot result from OpenClaw" /></td>
+  </tr>
+</table>
+
 ## CLI Installation
 
 Requirements:

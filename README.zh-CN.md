@@ -40,6 +40,23 @@ screenshot-stitcher --help
 
 本仓库也包含 skill 源码：[`skills/screenshot-stitcher/`](skills/screenshot-stitcher)。如果 agent 已经在克隆后的仓库里工作，也可以直接读取或安装这个目录。
 
+## 手机端使用案例
+
+你也可以在手机上使用 `screenshot-stitcher`：把 OpenClaw 接到飞书/Lark channel 里，在聊天里发送截图和指令；OpenClaw 读取 skill，在你的机器上调用本地 CLI，然后把拼接好的长图发回聊天窗口。
+
+下面是飞书手机端的使用流程：
+
+<table>
+  <tr>
+    <th align="left">把截图发给 OpenClaw</th>
+    <th align="left">收到拼接后的长图</th>
+  </tr>
+  <tr>
+    <td><img src="examples/usecases/openclaw-feishu/request.png" width="260" alt="飞书手机端把截图发送给 OpenClaw" /></td>
+    <td><img src="examples/usecases/openclaw-feishu/result.png" width="260" alt="飞书手机端收到 OpenClaw 返回的长截图" /></td>
+  </tr>
+</table>
+
 ## CLI 安装
 
 环境要求：
