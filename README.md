@@ -6,6 +6,8 @@ A small CLI for stitching multiple vertically scrolling iPhone screenshots into 
 
 It is designed for ordered screenshots from the same device and works best on list-like pages, app stores, settings screens, and similar vertical interfaces.
 
+This is not an AI image generation tool. It is a deterministic image-processing utility powered by OpenCV and NumPy: it crops stable UI chrome, searches for overlapping regions, verifies alignment with visual features, and chooses a clean horizontal seam.
+
 ## Showcase
 
 Full grouped sample assets live under [`examples/cases/`](examples/cases).
@@ -65,6 +67,8 @@ Requirements:
 - Python `3.10` or newer
 - `pip`
 - macOS, Linux, or Windows with prebuilt `opencv-python` wheels available
+- `numpy`
+- `opencv-python`
 
 The package is meant to be installed with `pip`.
 
@@ -141,6 +145,17 @@ Common flags:
 - `--template-height`: template height used during overlap matching
 - `--threshold`: confidence threshold for accepting overlap matches
 
+## How It Works
+
+`screenshot-stitcher` does not call GPT-image-2, an LLM, or any external vision API. The pipeline is local and OpenCV-driven:
+
+- Convert screenshots to grayscale and edge representations with OpenCV
+- Ignore configurable top/bottom UI chrome and noisy horizontal margins
+- Estimate vertical overlap with multi-scale template and row-profile matching
+- Re-score candidate matches with ORB feature support and local anchor consistency
+- Pick a low-difference horizontal seam inside the overlap
+- Stack the original image regions into one long screenshot
+
 ## Current Scope
 
 This project is intentionally narrow:
@@ -171,3 +186,11 @@ Because the CLI contract is simple and the prompting surface is small, the same 
 ## License
 
 [MIT](LICENSE)
+
+Runtime dependencies are installed from PyPI and are not vendored in this repository:
+
+- NumPy: BSD 3-Clause
+- opencv-python package scripts: MIT
+- OpenCV: Apache 2.0
+
+These are permissive licenses and are compatible with keeping this project under MIT. If you redistribute a bundled binary application instead of a normal PyPI package, include the relevant third-party notices for those bundled dependencies.

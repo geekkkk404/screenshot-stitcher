@@ -6,6 +6,8 @@
 
 它更适合同一台设备、同一页面流、按正确顺序输入的截图，尤其适合列表页、应用商店、设置页这类纵向界面。
 
+这不是 AI 图像生成工具。它是一个由 OpenCV 和 NumPy 驱动的确定性图像处理工具：裁掉稳定 UI 区域，寻找相邻截图的重叠部分，用视觉特征验证对齐，并选择自然的水平拼接线。
+
 ## 成果展示
 
 整理后的分组案例都放在 [`examples/cases/`](examples/cases) 目录下。
@@ -65,6 +67,8 @@
 - Python `3.10` 或更新版本
 - `pip`
 - macOS、Linux 或 Windows，并且当前平台能安装预编译的 `opencv-python` wheel
+- `numpy`
+- `opencv-python`
 
 这个项目推荐通过 `pip` 安装。
 
@@ -141,6 +145,17 @@ python main.py img1.png img2.png img3.png -o output.png
 - `--template-height`：重叠检测使用的模板高度
 - `--threshold`：接受重叠匹配的置信度阈值
 
+## 工作原理
+
+`screenshot-stitcher` 不会调用 GPT-image-2、LLM 或任何外部视觉 API。整个流程都在本地完成，核心由 OpenCV 驱动：
+
+- 使用 OpenCV 将截图转换成灰度图和边缘特征
+- 忽略可配置的顶部/底部 UI 区域和左右噪声边缘
+- 通过多尺度模板匹配和行 profile 匹配估计纵向重叠
+- 用 ORB 特征和局部 anchor 一致性重新评分候选结果
+- 在重叠区域内选择差异较低的水平拼接线
+- 最后把原始图片片段堆叠成一张长截图
+
 ## 当前适用范围
 
 这个项目故意保持在一个比较窄但实用的范围里：
@@ -171,3 +186,11 @@ python main.py img1.png img2.png img3.png -o output.png
 ## License
 
 [MIT](LICENSE)
+
+运行时依赖由 PyPI 安装，并没有 vendored 到本仓库里：
+
+- NumPy：BSD 3-Clause
+- opencv-python 包装脚本：MIT
+- OpenCV：Apache 2.0
+
+这些都是宽松开源协议，和本项目继续使用 MIT 协议没有明显冲突。如果未来不是普通 PyPI 包，而是打包成包含依赖的二进制应用再分发，需要同时保留对应第三方依赖的许可证和 NOTICE 信息。
