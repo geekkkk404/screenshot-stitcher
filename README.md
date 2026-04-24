@@ -16,25 +16,27 @@ The optional agent skill is only a routing layer. It helps Codex, OpenClaw, Clau
 
 ## Agent / Skill Installation
 
-If you use OpenClaw, Codex, or another agent that can install ClawHub skills, install the skill first:
+Agents need two pieces:
+
+- The ClawHub skill, which teaches the agent when and how to call the tool
+- The Python CLI, which actually stitches images locally with OpenCV/NumPy
+
+Install both. Do not stop after `clawhub install screenshot-stitcher`; the skill does not bundle the Python CLI.
 
 ```bash
 clawhub install screenshot-stitcher
-```
-
-Then install the local CLI in the Python environment that the agent will use:
-
-```bash
-pip install screenshot-stitcher
+python -m pip install --upgrade screenshot-stitcher
 screenshot-stitcher --help
 ```
 
-If your machine has multiple Python installations, use `python -m pip` to target the right environment:
+If the agent runs commands inside a virtual environment, run the same install commands after activating that environment:
 
 ```bash
-python -m pip install screenshot-stitcher
+python -m pip install --upgrade screenshot-stitcher
 screenshot-stitcher --help
 ```
+
+After this, the agent can use the `screenshot-stitcher` command directly. If `screenshot-stitcher --help` fails, the CLI was installed into a different Python environment.
 
 The skill source is also included in this repository at [`skills/screenshot-stitcher/`](skills/screenshot-stitcher), so agents working from a cloned checkout can read or install it directly.
 

@@ -16,25 +16,27 @@
 
 ## Agent / Skill 安装
 
-如果你使用 OpenClaw、Codex，或其他可以安装 ClawHub skill 的 agent，先安装 skill：
+Agent 需要安装两个部分：
+
+- ClawHub skill：告诉 agent 什么时候、如何调用这个工具
+- Python CLI：真正用 OpenCV/NumPy 在本地执行图片拼接
+
+两个都要安装。不要只执行 `clawhub install screenshot-stitcher`；skill 不会自动包含 Python CLI。
 
 ```bash
 clawhub install screenshot-stitcher
-```
-
-然后把本地 CLI 安装到 agent 会使用的 Python 环境里：
-
-```bash
-pip install screenshot-stitcher
+python -m pip install --upgrade screenshot-stitcher
 screenshot-stitcher --help
 ```
 
-如果机器上有多个 Python 环境，可以用 `python -m pip` 指定安装目标：
+如果 agent 在虚拟环境里运行命令，先进入同一个虚拟环境，再执行安装：
 
 ```bash
-python -m pip install screenshot-stitcher
+python -m pip install --upgrade screenshot-stitcher
 screenshot-stitcher --help
 ```
+
+完成后，agent 就可以直接使用 `screenshot-stitcher` 命令。如果 `screenshot-stitcher --help` 失败，说明 CLI 被安装到了另一个 Python 环境。
 
 本仓库也包含 skill 源码：[`skills/screenshot-stitcher/`](skills/screenshot-stitcher)。如果 agent 已经在克隆后的仓库里工作，也可以直接读取或安装这个目录。
 
