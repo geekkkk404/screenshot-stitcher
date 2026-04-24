@@ -22,6 +22,11 @@
     <td><a href="examples/cases/app-store-search/stitched.png"><img src="examples/cases/app-store-search/preview-stitched.png" width="180" alt="App Store 拼接结果" /></a></td>
   </tr>
   <tr>
+    <td><strong>小红书个人主页</strong><br/>3 张截图<br/><a href="examples/cases/xiaohongshu-profile/stitched.png">查看完整结果</a></td>
+    <td><a href="examples/cases/xiaohongshu-profile/preview-inputs.png"><img src="examples/cases/xiaohongshu-profile/preview-inputs.png" width="360" alt="小红书个人主页输入截图" /></a></td>
+    <td><a href="examples/cases/xiaohongshu-profile/stitched.png"><img src="examples/cases/xiaohongshu-profile/preview-stitched.png" width="180" alt="小红书个人主页拼接结果" /></a></td>
+  </tr>
+  <tr>
     <td><strong>Apple 官网首页</strong><br/>5 张截图<br/><a href="examples/cases/apple-homepage/stitched.png">查看完整结果</a></td>
     <td><a href="examples/cases/apple-homepage/preview-inputs.png"><img src="examples/cases/apple-homepage/preview-inputs.png" width="360" alt="Apple 官网首页输入截图" /></a></td>
     <td><a href="examples/cases/apple-homepage/stitched.png"><img src="examples/cases/apple-homepage/preview-stitched.png" width="180" alt="Apple 官网首页拼接结果" /></a></td>

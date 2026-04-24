@@ -22,6 +22,11 @@ Full grouped sample assets live under [`examples/cases/`](examples/cases).
     <td><a href="examples/cases/app-store-search/stitched.png"><img src="examples/cases/app-store-search/preview-stitched.png" width="180" alt="App Store stitched output" /></a></td>
   </tr>
   <tr>
+    <td><strong>Xiaohongshu Profile</strong><br/>3 screenshots<br/><a href="examples/cases/xiaohongshu-profile/stitched.png">Full result</a></td>
+    <td><a href="examples/cases/xiaohongshu-profile/preview-inputs.png"><img src="examples/cases/xiaohongshu-profile/preview-inputs.png" width="360" alt="Xiaohongshu profile input screenshots" /></a></td>
+    <td><a href="examples/cases/xiaohongshu-profile/stitched.png"><img src="examples/cases/xiaohongshu-profile/preview-stitched.png" width="180" alt="Xiaohongshu profile stitched output" /></a></td>
+  </tr>
+  <tr>
     <td><strong>Apple Homepage</strong><br/>5 screenshots<br/><a href="examples/cases/apple-homepage/stitched.png">Full result</a></td>
     <td><a href="examples/cases/apple-homepage/preview-inputs.png"><img src="examples/cases/apple-homepage/preview-inputs.png" width="360" alt="Apple homepage input screenshots" /></a></td>
     <td><a href="examples/cases/apple-homepage/stitched.png"><img src="examples/cases/apple-homepage/preview-stitched.png" width="180" alt="Apple homepage stitched output" /></a></td>
