@@ -6,7 +6,7 @@
 
 它更适合同一台设备、同一页面流、按正确顺序输入的截图，尤其适合列表页、应用商店、设置页这类纵向界面。
 
-这不是 AI 图像生成工具。它是一个由 OpenCV 和 NumPy 驱动的确定性图像处理工具：裁掉稳定 UI 区域，寻找相邻截图的重叠部分，用视觉特征验证对齐，并选择自然的水平拼接线。
+这不是 AI 图像生成工具。它是一个由 OpenCV 和 NumPy 驱动的确定性图像处理工具：裁掉稳定 UI 区域，寻找相邻截图的重叠部分，用视觉特征验证对齐，并选择自然的水平拼接线。你的截图会留在本机；这个 CLI 不会上传图片，也不会调用托管的 AI API。
 
 ## 成果展示
 
@@ -60,6 +60,10 @@
 - 支持通过参数调节顶部/底部 UI 裁剪和左右边缘屏蔽
 - 在重叠置信度不足时，提供兜底拼接策略
 
+## 本地处理
+
+所有处理都发生在本机。`screenshot-stitcher` 从磁盘读取图片，在当前 Python 进程里运行 OpenCV/NumPy 匹配，然后把拼接结果写回磁盘。它不会把截图、文件名或图片元数据发送到任何外部服务。
+
 ## 安装
 
 环境要求：
@@ -67,36 +71,35 @@
 - Python `3.10` 或更新版本
 - `pip`
 - macOS、Linux 或 Windows，并且当前平台能安装预编译的 `opencv-python` wheel
+
+运行时依赖会自动安装：
+
 - `numpy`
 - `opencv-python`
 
-这个项目推荐通过 `pip` 安装。
-
-### 从 PyPI 安装
-
-项目发布到 PyPI 后，推荐使用这种方式：
+安装 CLI：
 
 ```bash
 pip install screenshot-stitcher
 screenshot-stitcher --help
 ```
 
-如果机器上有多个 Python 环境，可以使用 `python -m pip`，确保安装到你要使用的那个 Python 环境：
+如果机器上有多个 Python 环境，可以使用 `python -m pip`，安装到指定的 Python 环境：
 
 ```bash
 python -m pip install screenshot-stitcher
 ```
 
-### 从 GitHub 安装
+### 安装 GitHub 最新版
 
-如果还没有发布到 PyPI，可以直接从公开 GitHub 仓库安装：
+也可以直接从 GitHub 仓库安装：
 
 ```bash
 pip install "git+https://github.com/mate-matt/screenshot-stitcher.git"
 screenshot-stitcher --help
 ```
 
-### 从已克隆的仓库安装
+### 从已克隆仓库安装
 
 如果 Codex、Claude 这类 agent 已经在这个仓库目录里工作，直接在仓库根目录安装：
 
