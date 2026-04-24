@@ -1,0 +1,4 @@
+interface:
+  display_name: "Screenshot Stitcher"
+  short_description: "Stitch vertically scrolling iPhone screenshots with the local CLI"
+  default_prompt: "Use $screenshot-stitcher to combine multiple ordered iPhone screenshots into one long image, choosing crop and edge-margin flags only when the default command is not enough."
