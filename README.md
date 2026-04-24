@@ -33,6 +33,23 @@ Full grouped sample assets live under [`examples/cases/`](examples/cases).
   </tr>
 </table>
 
+## Why Not Just Use GPT-Image-2?
+
+Long screenshot stitching is mostly a structural alignment problem, not an image generation problem. A general image model can produce plausible-looking output, but it may duplicate browser chrome, repeat page sections, or blur seams that should stay exact.
+
+The comparison below uses the same Apple homepage flow:
+
+<table>
+  <tr>
+    <th align="left">screenshot-stitcher</th>
+    <th align="left">GPT-image-2</th>
+  </tr>
+  <tr>
+    <td><a href="examples/cases/apple-homepage/stitched.png"><img src="examples/comparisons/gpt-image-2/apple-homepage/screenshot-stitcher.png" width="180" alt="screenshot-stitcher Apple homepage result" /></a></td>
+    <td><a href="examples/comparisons/gpt-image-2/apple-homepage/gpt-image-2.png"><img src="examples/comparisons/gpt-image-2/apple-homepage/gpt-image-2.png" width="180" alt="GPT-image-2 Apple homepage result" /></a></td>
+  </tr>
+</table>
+
 ## Features
 
 - Stitch screenshots in the exact order you pass on the command line

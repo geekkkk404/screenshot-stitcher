@@ -33,6 +33,23 @@
   </tr>
 </table>
 
+## 为什么不是直接用 GPT-image-2
+
+长截图拼接更像“精确的结构对齐问题”，而不是“开放式图像生成问题”。通用图像模型可以生成看起来合理的结果，但容易重复浏览器栏、重复页面段落，或者把本来应该精确保留的衔接处糊掉。
+
+下面是同一组 Apple 官网首页截图的对比：
+
+<table>
+  <tr>
+    <th align="left">screenshot-stitcher</th>
+    <th align="left">GPT-image-2</th>
+  </tr>
+  <tr>
+    <td><a href="examples/cases/apple-homepage/stitched.png"><img src="examples/comparisons/gpt-image-2/apple-homepage/screenshot-stitcher.png" width="180" alt="screenshot-stitcher 的 Apple 官网首页拼接结果" /></a></td>
+    <td><a href="examples/comparisons/gpt-image-2/apple-homepage/gpt-image-2.png"><img src="examples/comparisons/gpt-image-2/apple-homepage/gpt-image-2.png" width="180" alt="GPT-image-2 的 Apple 官网首页生成结果" /></a></td>
+  </tr>
+</table>
+
 ## 功能
 
 - 严格按你传入的顺序拼接截图
