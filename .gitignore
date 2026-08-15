@@ -1,8 +1,25 @@
-.DS_Store
+# Python
 __pycache__/
 *.pyc
+*.pyo
 build/
 dist/
 *.egg-info/
-output.png
 .venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Project data folders (privacy)
+input/
+output/
+done/
+
+# Legacy output
+output.png
